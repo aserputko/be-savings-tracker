@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
 import { ClsServiceManager } from 'nestjs-cls';
 import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
@@ -18,14 +17,7 @@ export const winstonConfig: winston.LoggerOptions = {
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     winston.format.errors({ stack: true }),
     requestIdFormat(),
-    isProduction
-      ? winston.format.json()
-      : winston.format.combine(
-          nestWinstonModuleUtilities.format.nestLike('SavingsTracker', {
-            colors: true,
-            prettyPrint: true,
-          }),
-        ),
+    winston.format.json(),
   ),
   transports: [
     new winston.transports.Console(),
