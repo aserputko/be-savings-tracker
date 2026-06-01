@@ -14,11 +14,11 @@ export class CreateSavingsGoalHandler {
   ) {}
 
   async execute(command: CreateSavingsGoalCommand): Promise<SavingsGoalResponseDto> {
+    this.logger.debug(`Creating savings goal "${command.name}" for user: ${command.userId}`);
+
     this.validator.validateName(command.name);
     this.validator.validateTargetAmount(command.targetAmount);
     this.validator.validateDeadline(command.deadline);
-
-    this.logger.debug(`Creating savings goal "${command.name}" for user: ${command.userId}`);
 
     const goal = await this.savingsGoalRepository.create({
       name: command.name,
