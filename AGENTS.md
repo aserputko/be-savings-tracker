@@ -13,12 +13,20 @@
 3. Optional local Postgres via Docker: `docker compose up -d postgresDB`
 4. Run in watch mode: `npm run start:dev`
 
-## Required Validation Before Finishing Changes
+## Post-Task Hook
 
-1. Lint: `npm run lint`
-2. Unit tests: `npm run test`
-3. E2E tests: `npm run test:e2e`
-4. Build: `npm run build`
+**After completing every task or set of tasks, you MUST run the following commands in sequence from the `be-savings-tracker/` directory. Do not report completion to the user until all commands pass.**
+
+```bash
+npm run lint      # auto-formats and fixes lint errors (--fix is built-in)
+npm run test      # runs all unit tests
+npm run build     # compiles TypeScript and verifies the build
+```
+
+- Run `npm run lint` first — it applies autoformatting in place before tests and build.
+- If `npm run test` fails, fix the failures before proceeding to `npm run build`.
+- If `npm run build` fails, fix the compilation errors and re-run `npm run test` and `npm run build`.
+- Only report task completion after all three commands exit with code 0.
 
 ## Architecture Map
 
