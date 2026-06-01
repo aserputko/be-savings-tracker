@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
@@ -23,12 +22,21 @@ export interface UpdateSavingsGoalData {
 export class SavingsGoalRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(userId: string): Promise<SavingsGoal[]> {
-    const goals = await this.prisma.savingsGoal.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
-    });
-    return goals.map((g) => this.toEntity(g));
+  async findAllPaginated(
+    userId: string,
+    pageNumber: number,
+    pageSize: number,
+  ): Promise<{ goals: SavingsGoal[]; total: number }> {
+    const [records, total] = await Promise.all([
+      this.prisma.savingsGoal.findMany({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+        skip: (pageNumber - 1) * pageSize,
+        take: pageSize,
+      }),
+      this.prisma.savingsGoal.count({ where: { userId } }),
+    ]);
+    return { goals: records.map((r) => this.toEntity(r)), total };
   }
 
   async findOne(id: string, userId: string): Promise<SavingsGoal | null> {
