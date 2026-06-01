@@ -1,7 +1,14 @@
 import 'dotenv/config';
 import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
+import { ClsServiceManager } from 'nestjs-cls';
 import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
+
+const requestIdFormat = winston.format((info) => {
+  const id = ClsServiceManager.getClsService()?.getId() as string | undefined;
+  if (id) info['requestId'] = id;
+  return info;
+});
 
 const isProduction = process.env['NODE_ENV'] === 'production';
 
@@ -10,6 +17,7 @@ export const winstonConfig: winston.LoggerOptions = {
   format: winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     winston.format.errors({ stack: true }),
+    requestIdFormat(),
     isProduction
       ? winston.format.json()
       : winston.format.combine(
@@ -27,6 +35,7 @@ export const winstonConfig: winston.LoggerOptions = {
       format: winston.format.combine(
         winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         winston.format.errors({ stack: true }),
+        requestIdFormat(),
         winston.format.json(),
       ),
     }),
@@ -35,6 +44,7 @@ export const winstonConfig: winston.LoggerOptions = {
       format: winston.format.combine(
         winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         winston.format.errors({ stack: true }),
+        requestIdFormat(),
         winston.format.json(),
       ),
     }),
