@@ -35,7 +35,6 @@ describe('AddDepositHandler', () => {
   const mockDeposit: SavingsGoalDeposit = {
     id: 'deposit-id-1',
     savingsGoalId: 'goal-id-1',
-    name: 'Monthly savings',
     amount: 200,
     note: null,
     createdAt: new Date(),
@@ -69,39 +68,22 @@ describe('AddDepositHandler', () => {
     savingsGoalRepository.findOne.mockResolvedValue(mockGoal);
     depositRepository.createDepositAndUpdateGoal.mockResolvedValue(mockDeposit);
 
-    const command = new AddDepositCommand('user-id-1', 'goal-id-1', 'Monthly savings', 200);
+    const command = new AddDepositCommand('user-id-1', 'goal-id-1', 200);
 
     const result = await handler.execute(command);
 
     expect(savingsGoalRepository.findOne).toHaveBeenCalledWith('goal-id-1', 'user-id-1');
     expect(depositRepository.createDepositAndUpdateGoal).toHaveBeenCalledWith({
       savingsGoalId: 'goal-id-1',
-      name: 'Monthly savings',
       amount: 200,
       note: undefined,
     });
     expect(result).toEqual(mockDeposit);
   });
 
-  it('should throw BadRequestException when name exceeds 256 characters', async () => {
-    const longName = 'a'.repeat(257);
-    const command = new AddDepositCommand('user-id-1', 'goal-id-1', longName, 200);
-
-    await expect(handler.execute(command)).rejects.toThrow(BadRequestException);
-    await expect(handler.execute(command)).rejects.toThrow(
-      'Savings goal name must not exceed 256 characters',
-    );
-    expect(depositRepository.createDepositAndUpdateGoal).not.toHaveBeenCalled();
-  });
-
   it('should throw BadRequestException when deposit amount is zero or negative', async () => {
-    const zeroCommand = new AddDepositCommand('user-id-1', 'goal-id-1', 'Monthly savings', 0);
-    const negativeCommand = new AddDepositCommand(
-      'user-id-1',
-      'goal-id-1',
-      'Monthly savings',
-      -100,
-    );
+    const zeroCommand = new AddDepositCommand('user-id-1', 'goal-id-1', 0);
+    const negativeCommand = new AddDepositCommand('user-id-1', 'goal-id-1', -100);
 
     await expect(handler.execute(zeroCommand)).rejects.toThrow(BadRequestException);
     await expect(handler.execute(zeroCommand)).rejects.toThrow(
@@ -113,7 +95,7 @@ describe('AddDepositHandler', () => {
 
   it('should throw NotFoundException when savings goal does not exist', async () => {
     savingsGoalRepository.findOne.mockResolvedValue(null);
-    const command = new AddDepositCommand('user-id-1', 'nonexistent-goal', 'Monthly savings', 200);
+    const command = new AddDepositCommand('user-id-1', 'nonexistent-goal', 200);
 
     await expect(handler.execute(command)).rejects.toThrow(NotFoundException);
     await expect(handler.execute(command)).rejects.toThrow('Savings goal not found');

@@ -26,7 +26,6 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   }
 
   $transaction<T>(fn: (tx: PrismaClient) => Promise<T>): Promise<T> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.prisma.$transaction(fn as any) as unknown as Promise<T>;
   }
 

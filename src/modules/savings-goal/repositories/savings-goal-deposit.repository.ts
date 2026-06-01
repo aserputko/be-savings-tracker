@@ -5,7 +5,6 @@ import { SavingsGoalDeposit } from '../entities/savings-goal-deposit.entity';
 
 export interface CreateDepositData {
   savingsGoalId: string;
-  name: string;
   amount: number;
   note?: string;
 }
@@ -18,7 +17,6 @@ export class SavingsGoalDepositRepository {
     return this.prisma.$transaction(async (tx: PrismaClient) => {
       const deposit = await tx.savingsGoalDeposit.create({
         data: {
-          name: data.name,
           amount: data.amount,
           note: data.note ?? null,
           savingsGoalId: data.savingsGoalId,
@@ -37,7 +35,6 @@ export class SavingsGoalDepositRepository {
   private toEntity(record: {
     id: string;
     savingsGoalId: string;
-    name: string;
     amount: { toNumber(): number } | number;
     note: string | null;
     createdAt: Date;
@@ -46,7 +43,6 @@ export class SavingsGoalDepositRepository {
     const entity = new SavingsGoalDeposit();
     entity.id = record.id;
     entity.savingsGoalId = record.savingsGoalId;
-    entity.name = record.name;
     entity.amount = typeof record.amount === 'object' ? record.amount.toNumber() : record.amount;
     entity.note = record.note;
     entity.createdAt = record.createdAt;

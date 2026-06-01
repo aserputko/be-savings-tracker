@@ -17,10 +17,9 @@ export class AddDepositHandler {
 
   async execute(command: AddDepositCommand): Promise<SavingsGoalDepositResponseDto> {
     this.logger.debug(
-      `Adding deposit "${command.name}" to goal: ${command.savingsGoalId} for user: ${command.userId}`,
+      `Adding deposit to goal: ${command.savingsGoalId} for user: ${command.userId}`,
     );
 
-    this.validator.validateName(command.name);
     this.validator.validateDepositAmount(command.amount);
 
     const goal = await this.savingsGoalRepository.findOne(command.savingsGoalId, command.userId);
@@ -30,7 +29,6 @@ export class AddDepositHandler {
 
     const deposit = await this.depositRepository.createDepositAndUpdateGoal({
       savingsGoalId: command.savingsGoalId,
-      name: command.name,
       amount: command.amount,
       note: command.note,
     });

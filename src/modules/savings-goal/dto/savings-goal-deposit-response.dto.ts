@@ -7,9 +7,6 @@ export class SavingsGoalDepositResponseDto {
   @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
   savingsGoalId: string;
 
-  @ApiProperty({ example: 'Monthly savings' })
-  name: string;
-
   @ApiProperty({ example: 200.0 })
   amount: number;
 

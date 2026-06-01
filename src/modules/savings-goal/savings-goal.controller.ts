@@ -102,7 +102,7 @@ export class SavingsGoalController {
   ): Promise<SavingsGoalDepositResponseDto> {
     this.logger.log(`Add deposit to goal ${id} from user: ${req.user.id}`);
     const result = await this.addDepositHandler.execute(
-      new AddDepositCommand(req.user.id, id, dto.name, dto.amount, dto.note),
+      new AddDepositCommand(req.user.id, id, dto.amount, dto.note),
     );
     this.logger.log(`Deposit added: ${result.id} to goal: ${id}`);
     return result;
