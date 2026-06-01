@@ -1,8 +1,8 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { SavingsGoal } from '../entities/savings-goal.entity';
-import { SavingsGoalRepository } from '../savings-goal.repository';
-import { SavingsGoalValidator } from '../validators/savings-goal.validator';
+import { SavingsGoal } from '../../entities/savings-goal.entity';
+import { SavingsGoalRepository } from '../../repositories/savings-goal.repository';
+import { SavingsGoalValidator } from '../../validators/savings-goal.validator';
 import { CreateSavingsGoalCommand } from './create-savings-goal.command';
 import { CreateSavingsGoalHandler } from './create-savings-goal.handler';
 
@@ -18,6 +18,7 @@ describe('CreateSavingsGoalHandler', () => {
     id: 'goal-id-1',
     name: 'Emergency Fund',
     targetAmount: 5000,
+    currentAmount: 0,
     deadline: new Date('2026-12-31'),
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -52,6 +53,7 @@ describe('CreateSavingsGoalHandler', () => {
     expect(repository.create).toHaveBeenCalledWith({
       name: 'Emergency Fund',
       targetAmount: 5000,
+      currentAmount: 0,
       deadline: '2026-12-31',
       userId: 'user-id-1',
     });

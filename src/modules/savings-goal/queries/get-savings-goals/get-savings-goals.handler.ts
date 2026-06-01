@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { SavingsGoalsListResponseDto } from '../dto/savings-goals-list-response.dto';
-import { SavingsGoalRepository } from '../savings-goal.repository';
+import { SavingsGoalsListResponseDto } from '../../dto/savings-goals-list-response.dto';
+import { SavingsGoalRepository } from '../../repositories/savings-goal.repository';
 import { GetSavingsGoalsQuery } from './get-savings-goals.query';
 
 @Injectable()

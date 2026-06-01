@@ -36,11 +36,13 @@ src/
 ├── modules/
 │   └── [feature]/
 │       ├── commands/
-│       │   ├── create-[feature].handler.ts
-│       │   └── create-[feature].command.ts
+│       │   ├── [create-[feature]]/
+│       │       ├── create-[feature].handler.ts
+│       │       └── create-[feature].command.ts
 │       ├── queries/
-│       │   ├── get-[feature].handler.ts
-│       │   └── get-[feature].query.ts
+│       │   ├── [get-[feature]]
+│       │       ├── get-[feature].handler.ts
+│       │       └── get-[feature].query.ts
 │       ├── dto/
 │       │   ├── create-[feature].dto.ts
 │       │   └── [feature]-response.dto.ts

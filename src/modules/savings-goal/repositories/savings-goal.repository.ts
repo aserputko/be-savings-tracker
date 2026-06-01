@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { SavingsGoalModel } from '../../../generated/prisma/models/SavingsGoal';
-import { PrismaService } from '../../prisma/prisma.service';
-import { SavingsGoal } from './entities/savings-goal.entity';
+import { SavingsGoalModel } from '../../../../generated/prisma/models/SavingsGoal';
+import { PrismaService } from '../../../prisma/prisma.service';
+import { SavingsGoal } from '../entities/savings-goal.entity';
 
 export interface CreateSavingsGoalData {
   name: string;
@@ -79,6 +79,7 @@ export class SavingsGoalRepository {
     entity.id = record.id;
     entity.name = record.name;
     entity.targetAmount = Number(record.targetAmount);
+    entity.currentAmount = Number(record.currentAmount);
     entity.deadline = record.deadline;
     entity.createdAt = record.createdAt;
     entity.updatedAt = record.updatedAt;

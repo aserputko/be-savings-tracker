@@ -14,11 +14,20 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
     return this.prisma.savingsGoal;
   }
 
+  get savingsGoalDeposit() {
+    return this.prisma.savingsGoalDeposit;
+  }
+
   constructor() {
     const adapter = new PrismaPg({
       connectionString: process.env['DATABASE_URL'],
     });
     this.prisma = new PrismaClient({ adapter });
+  }
+
+  $transaction<T>(fn: (tx: PrismaClient) => Promise<T>): Promise<T> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return this.prisma.$transaction(fn as any) as unknown as Promise<T>;
   }
 
   async onModuleInit(): Promise<void> {

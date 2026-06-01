@@ -22,12 +22,25 @@ model User {
 }
 
 model SavingsGoal {
-  id            String    @id @default(uuid())
-  name          String    @db.VarChar(256)
-  targetAmount  Decimal   @db.Decimal(15, 2)
+  id            String                @id @default(uuid())
+  name          String                @db.VarChar(256)
+  targetAmount  Decimal               @db.Decimal(15, 2)
+  currentAmount Decimal               @default(0) @db.Decimal(15, 2)
   deadline      DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
   userId        String
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deposits      SavingsGoalDeposit[]
+}
+
+model SavingsGoalDeposit {
+  id            String      @id @default(uuid())
+  name          String      @db.VarChar(256)
+  amount        Decimal     @db.Decimal(15, 2)
+  note          String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  savingsGoalId String
+  savingsGoal   SavingsGoal @relation(fields: [savingsGoalId], references: [id], onDelete: Cascade)
 }

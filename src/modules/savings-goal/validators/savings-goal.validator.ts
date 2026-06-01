@@ -14,6 +14,12 @@ export class SavingsGoalValidator {
     }
   }
 
+  validateDepositAmount(amount: number): void {
+    if (amount <= 0) {
+      throw new BadRequestException('Deposit amount must be a positive number');
+    }
+  }
+
   validateDeadline(deadline?: string | Date): void {
     if (deadline === undefined || deadline === null) {
       return;

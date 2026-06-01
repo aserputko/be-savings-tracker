@@ -10,6 +10,9 @@ export class SavingsGoalResponseDto {
   @ApiProperty({ example: 5000.0 })
   targetAmount: number;
 
+  @ApiProperty({ example: 250.0 })
+  currentAmount: number;
+
   @ApiPropertyOptional({ example: '2027-12-31T00:00:00.000Z', nullable: true })
   deadline: Date | null;
 

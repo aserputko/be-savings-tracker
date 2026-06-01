@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { SavingsGoalResponseDto } from '../dto/savings-goal-response.dto';
-import { SavingsGoalRepository } from '../savings-goal.repository';
-import { SavingsGoalValidator } from '../validators/savings-goal.validator';
+import { SavingsGoalResponseDto } from '../../dto/savings-goal-response.dto';
+import { SavingsGoalRepository } from '../../repositories/savings-goal.repository';
+import { SavingsGoalValidator } from '../../validators/savings-goal.validator';
 import { CreateSavingsGoalCommand } from './create-savings-goal.command';
 
 @Injectable()
