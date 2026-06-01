@@ -1,4 +1,13 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Logger,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthResponseDto } from './dto/auth-response.dto';
@@ -13,6 +22,8 @@ interface AuthenticatedRequest {
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
+
   constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ summary: 'Register a new user' })
@@ -25,8 +36,11 @@ export class AuthController {
   @ApiResponse({ status: HttpStatus.UNPROCESSABLE_ENTITY, description: 'Validation failed' })
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  signup(@Body() dto: SignupDto): Promise<AuthResponseDto> {
-    return this.authService.signup(dto);
+  async signup(@Body() dto: SignupDto): Promise<AuthResponseDto> {
+    this.logger.log(`Signup attempt for email: ${dto.email}`);
+    const result = await this.authService.signup(dto);
+    this.logger.log(`Signup successful for email: ${dto.email}`);
+    return result;
   }
 
   @ApiOperation({ summary: 'Log in with email and password' })
@@ -36,7 +50,8 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  login(@Request() req: AuthenticatedRequest): Promise<AuthResponseDto> {
+  async login(@Request() req: AuthenticatedRequest): Promise<AuthResponseDto> {
+    this.logger.log(`Login successful for user: ${req.user.id}`);
     return this.authService.login(req.user);
   }
 }
