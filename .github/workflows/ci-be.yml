@@ -10,7 +10,7 @@ on:
 
 defaults:
   run:
-    working-directory: be-savings-tracker
+    working-directory: ./
 
 jobs:
   ci:
