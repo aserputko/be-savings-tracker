@@ -29,6 +29,38 @@
 - Unit tests: `src/**/*.spec.ts`
 - E2E tests: `test/**/*.e2e-spec.ts`
 
+## Project Structure
+
+```
+src/
+├── modules/
+│   └── [feature]/
+│       ├── commands/
+│       │   ├── create-[feature].handler.ts
+│       │   └── create-[feature].command.ts
+│       ├── queries/
+│       │   ├── get-[feature].handler.ts
+│       │   └── get-[feature].query.ts
+│       ├── dto/
+│       │   ├── create-[feature].dto.ts
+│       │   └── [feature]-response.dto.ts
+│       ├── entities/
+│       │   └── [feature].entity.ts
+│       ├── [feature].controller.ts
+│       ├── [feature].service.ts
+│       └── [feature].module.ts
+├── prisma/
+│   ├── schema.prisma
+│   └── migrations/
+├── common/
+│   ├── decorators/
+│   ├── filters/
+│   ├── guards/
+│   ├── interceptors/
+│   └── pipes/
+└── config/
+```
+
 ## Code Conventions For Agents
 
 - Keep request handling in controllers and move logic into services.
