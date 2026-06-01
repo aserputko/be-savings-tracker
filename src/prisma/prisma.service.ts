@@ -10,6 +10,10 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
     return this.prisma.user;
   }
 
+  get savingsGoal() {
+    return this.prisma.savingsGoal;
+  }
+
   constructor() {
     const adapter = new PrismaPg({
       connectionString: process.env['DATABASE_URL'],

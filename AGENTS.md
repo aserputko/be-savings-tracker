@@ -47,6 +47,7 @@ src/
 │       ├── entities/
 │       │   └── [feature].entity.ts
 │       ├── [feature].controller.ts
+│       ├── [feature].repository.ts
 │       ├── [feature].service.ts
 │       └── [feature].module.ts
 ├── prisma/
@@ -68,6 +69,8 @@ src/
 - When adding features, prefer creating a dedicated module/controller/service set rather than growing `AppController` and `AppService`.
 - Keep TypeScript imports and compiler settings compatible with `module: nodenext`.
 - Avoid deep package imports (for example, prefer `@nestjs/config` over internal dist paths).
+- Each feature module must have a `[feature].repository.ts` that encapsulates all Prisma access for that feature. Handlers and services must not use `PrismaService` directly — they go through the repository.
+- The repository exposes typed methods (`findAll`, `findOne`, `create`, `update`, `delete`) and returns entity classes (from `entities/`), not raw Prisma types. Use a private `toEntity()` mapper inside the repository to convert `Prisma.Decimal` and other Prisma-specific types to plain TypeScript primitives.
 
 ## Environment And Runtime Pitfalls
 
