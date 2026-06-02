@@ -14,7 +14,7 @@ const isProduction = process.env['NODE_ENV'] === 'production';
 export const winstonConfig: winston.LoggerOptions = {
   level: isProduction ? 'info' : 'debug',
   format: winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
     winston.format.errors({ stack: true }),
     requestIdFormat(),
     winston.format.json(),
@@ -25,7 +25,7 @@ export const winstonConfig: winston.LoggerOptions = {
       filename: 'logs/error.log',
       level: 'error',
       format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
         winston.format.errors({ stack: true }),
         requestIdFormat(),
         winston.format.json(),
@@ -34,7 +34,7 @@ export const winstonConfig: winston.LoggerOptions = {
     new winston.transports.File({
       filename: 'logs/combined.log',
       format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
         winston.format.errors({ stack: true }),
         requestIdFormat(),
         winston.format.json(),
@@ -56,10 +56,15 @@ function buildLokiTransport(): LokiTransport | null {
       app: 'savings-tracker',
       env: process.env['NODE_ENV'] ?? 'development',
     },
-    json: true,
     batching: true,
     interval: 5,
     replaceTimestamp: false,
+    format: winston.format.combine(
+      winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+      winston.format.errors({ stack: true }),
+      requestIdFormat(),
+      winston.format.json(),
+    ),
     onConnectionError: (err) => console.error('Loki connection error:', err),
   });
 }
