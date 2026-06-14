@@ -6,7 +6,7 @@ import { SavingsGoalValidator } from '../../validators/savings-goal.validator';
 import { CreateSavingsGoalCommand } from './create-savings-goal.command';
 import { CreateSavingsGoalHandler } from './create-savings-goal.handler';
 
-jest.mock('../savings-goal.repository', () => ({
+jest.mock('../../repositories/savings-goal.repository', () => ({
   SavingsGoalRepository: jest.fn(),
 }));
 
@@ -53,7 +53,6 @@ describe('CreateSavingsGoalHandler', () => {
     expect(repository.create).toHaveBeenCalledWith({
       name: 'Emergency Fund',
       targetAmount: 5000,
-      currentAmount: 0,
       deadline: '2026-12-31',
       userId: 'user-id-1',
     });

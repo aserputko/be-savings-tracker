@@ -23,6 +23,8 @@ import { GetSavingsGoalsQueryDto } from './dto/get-savings-goals-query.dto';
 import { SavingsGoalDepositResponseDto } from './dto/savings-goal-deposit-response.dto';
 import { SavingsGoalResponseDto } from './dto/savings-goal-response.dto';
 import { SavingsGoalsListResponseDto } from './dto/savings-goals-list-response.dto';
+import { GetSavingsGoalHandler } from './queries/get-savings-goal/get-savings-goal.handler';
+import { GetSavingsGoalQuery } from './queries/get-savings-goal/get-savings-goal.query';
 import { GetSavingsGoalsHandler } from './queries/get-savings-goals/get-savings-goals.handler';
 import { GetSavingsGoalsQuery } from './queries/get-savings-goals/get-savings-goals.query';
 
@@ -40,6 +42,7 @@ export class SavingsGoalController {
   constructor(
     private readonly createHandler: CreateSavingsGoalHandler,
     private readonly getSavingsGoalsHandler: GetSavingsGoalsHandler,
+    private readonly getSavingsGoalHandler: GetSavingsGoalHandler,
     private readonly addDepositHandler: AddDepositHandler,
   ) {}
 
@@ -59,6 +62,24 @@ export class SavingsGoalController {
     return this.getSavingsGoalsHandler.execute(
       new GetSavingsGoalsQuery(req.user.id, query.pageNumber, query.pageSize),
     );
+  }
+
+  @ApiOperation({ summary: 'Get a savings goal by ID' })
+  @ApiParam({ name: 'id', description: 'Savings goal ID' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Savings goal found',
+    type: SavingsGoalResponseDto,
+  })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Missing or invalid token' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Savings goal not found' })
+  @Get(':id')
+  async findOne(
+    @Request() req: AuthenticatedRequest,
+    @Param('id') id: string,
+  ): Promise<SavingsGoalResponseDto> {
+    this.logger.log(`Get savings goal ${id} request from user: ${req.user.id}`);
+    return this.getSavingsGoalHandler.execute(new GetSavingsGoalQuery(req.user.id, id));
   }
 
   @ApiOperation({ summary: 'Create a new savings goal' })
