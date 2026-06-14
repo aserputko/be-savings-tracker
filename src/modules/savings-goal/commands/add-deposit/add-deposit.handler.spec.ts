@@ -8,11 +8,11 @@ import { SavingsGoalValidator } from '../../validators/savings-goal.validator';
 import { AddDepositCommand } from './add-deposit.command';
 import { AddDepositHandler } from './add-deposit.handler';
 
-jest.mock('../savings-goal.repository', () => ({
+jest.mock('../../repositories/savings-goal.repository', () => ({
   SavingsGoalRepository: jest.fn(),
 }));
 
-jest.mock('../repositories/savings-goal-deposit.repository', () => ({
+jest.mock('../../repositories/savings-goal-deposit.repository', () => ({
   SavingsGoalDepositRepository: jest.fn(),
 }));
 

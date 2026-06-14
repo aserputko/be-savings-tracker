@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '../../../../generated/prisma/client';
+import { Prisma } from '../../../../generated/prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { SavingsGoalDeposit } from '../entities/savings-goal-deposit.entity';
 
@@ -14,7 +14,7 @@ export class SavingsGoalDepositRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async createDepositAndUpdateGoal(data: CreateDepositData): Promise<SavingsGoalDeposit> {
-    return this.prisma.$transaction(async (tx: PrismaClient) => {
+    return this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       const deposit = await tx.savingsGoalDeposit.create({
         data: {
           amount: data.amount,
