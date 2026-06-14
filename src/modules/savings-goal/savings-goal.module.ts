@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AddDepositHandler } from './commands/add-deposit/add-deposit.handler';
 import { CreateSavingsGoalHandler } from './commands/create-savings-goal/create-savings-goal.handler';
+import { GetSavingsGoalHandler } from './queries/get-savings-goal/get-savings-goal.handler';
 import { GetSavingsGoalsHandler } from './queries/get-savings-goals/get-savings-goals.handler';
 import { SavingsGoalDepositRepository } from './repositories/savings-goal-deposit.repository';
 import { SavingsGoalRepository } from './repositories/savings-goal.repository';
@@ -14,6 +15,7 @@ import { SavingsGoalValidator } from './validators/savings-goal.validator';
     SavingsGoalDepositRepository,
     SavingsGoalValidator,
     CreateSavingsGoalHandler,
+    GetSavingsGoalHandler,
     GetSavingsGoalsHandler,
     AddDepositHandler,
   ],
